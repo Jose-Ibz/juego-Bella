@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///C:/Users/Jose/Downloads/bella.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 El Mundo Mágico de Bella</title>
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fff0f8;
+    --card: #ffffff;
+    --pink: #ff79b0;
+    --purple: #c084fc;
+    --mint: #4ade80;
+    --yellow: #fbbf24;
+    --blue: #60a5fa;
+    --peach: #fb923c;
+    --text: #4a2060;
+    --soft: #c084fc;
+    --border: #f0c0e0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(255,121,176,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(192,132,252,0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(251,191,36,0.05) 0%, transparent 60%);
+    font-family: 'Baloo 2', cursive;
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  /* Floating decorations */
+  .deco {
+    position: fixed; pointer-events: none; z-index: 0;
+    font-size: 1.8rem; opacity: 0.18; animation: float 6s ease-in-out infinite;
+  }
+  .deco:nth-child(1) { top:5%; left:3%; animation-delay:0s; }
+  .deco:nth-child(2) { top:15%; right:5%; animation-delay:1s; }
+  .deco:nth-child(3) { top:60%; left:2%; animation-delay:2s; }
+  .deco:nth-child(4) { top:75%; right:3%; animation-delay:0.5s; }
+  .deco:nth-child(5) { top:40%; left:1%; animation-delay:3s; font-size:1.2rem; }
+  .deco:nth-child(6) { top:90%; left:8%; animation-delay:1.5s; font-size:1.4rem; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(8deg); }
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    max-width: 640px; margin: 0 auto; padding: 20px 14px;
+  }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 22px; }
+  .logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.8rem, 7vw, 2.8rem);
+    color: var(--pink);
+    text-shadow: 3px 3px 0 rgba(255,121,176,0.2);
+    display: block; line-height: 1.1;
+  }
+  .subtitle {
+    font-size: 0.95rem; color: var(--purple); font-weight: 700; margin-top: 4px;
+  }
+
+  /* Stars earned */
+  .stars-row {
+    display: flex; justify-content: center; gap: 4px; margin-top: 8px;
+  }
+  .star { font-size: 1.4rem; transition: transform 0.3s; }
+  .star.lit { animation: starPop 0.4s ease; }
+  @keyframes starPop { 0%{transform:scale(1)} 50%{transform:scale(1.4)} 100%{transform:scale(1)} }
+
+  /* Stats */
+  .stats { display: flex; gap: 8px; margin-bottom: 16px; justify-content: center; flex-wrap: wrap; }
+  .stat-pill {
+    background: white; border: 2.5px solid var(--border);
+    border-radius: 50px; padding: 7px 16px;
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 800; font-size: 0.88rem; box-shadow: 0 2px 8px rgba(255,121,176,0.1);
+  }
+  .stat-value { color: var(--pink); }
+
+  /* Mode selector */
+  .mode-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .mode-btn {
+    background: white; border: 3px solid var(--border); border-radius: 20px;
+    padding: 12px 8px; cursor: pointer; text-align: center;
+    transition: all 0.2s; font-family: 'Baloo 2', cursive;
+    box-shadow: 0 3px 10px rgba(255,121,176,0.1);
+  }
+  .mode-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(255,121,176,0.2); }
+  .mode-btn.active { border-color: var(--pink); background: #fff0f8; }
+  .mode-icon { font-size: 1.8rem; display: block; margin-bottom: 3px; }
+  .mode-name { display: block; font-size: 0.82rem; font-weight: 800; color: var(--text); }
+  .mode-desc { display: block; font-size: 0.68rem; color: var(--soft); margin-top: 1px; }
+
+  /* Difficulty */
+  .difficulty-bar { display: flex; gap: 8px; margin-bottom: 16px; justify-content: center; }
+  .diff-btn {
+    flex: 1; max-width: 110px; padding: 8px 0;
+    border-radius: 50px; border: 2.5px solid var(--border);
+    background: white; color: #b0a0c0;
+    font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 0.82rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .diff-btn[data-diff="1"].active { border-color: var(--mint); color: #16a34a; background: #f0fdf4; }
+  .diff-btn[data-diff="2"].active { border-color: var(--yellow); color: #d97706; background: #fffbeb; }
+  .diff-btn[data-diff="3"].active { border-color: var(--pink); color: var(--pink); background: #fff0f8; }
+
+  /* Game card */
+  .game-card {
+    background: white; border: 3px solid var(--border); border-radius: 28px;
+    padding: 24px 20px; margin-bottom: 14px;
+    box-shadow: 0 6px 24px rgba(255,121,176,0.12);
+    position: relative; overflow: hidden;
+  }
+  .game-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
+    border-radius: 28px 28px 0 0;
+  }
+
+  .question-label {
+    font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em;
+    color: var(--soft); text-transform: uppercase; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .qnum {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white; border-radius: 50px; padding: 2px 10px; font-size: 0.7rem;
+  }
+
+  .progress-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 14px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #f0e0f0; transition: all 0.3s; }
+  .dot.done-ok { background: var(--mint); }
+  .dot.done-bad { background: #fca5a5; }
+  .dot.current { background: var(--pink); box-shadow: 0 0 8px rgba(255,121,176,0.5); transform: scale(1.2); }
+
+  /* Timer */
+  .timer-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .timer-bar-wrap { flex: 1; height: 8px; background: #f0e8f8; border-radius: 99px; overflow: hidden; }
+  .timer-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--mint), var(--blue)); transition: width 0.1s linear, background 0.5s; }
+  .timer-bar.urgent { background: linear-gradient(90deg, var(--pink), var(--peach)); }
+  .timer-label { font-size: 0.88rem; font-weight: 800; color: var(--soft); min-width: 28px; text-align: right; }
+
+  /* Question */
+  .question-text {
+    font-size: clamp(1.15rem, 4vw, 1.5rem); font-weight: 700;
+    line-height: 1.5; margin-bottom: 20px; color: var(--text); white-space: pre-line;
+  }
+
+  /* Options */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .opt-btn {
+    background: #fdf4ff; border: 2.5px solid #e8d0f0;
+    border-radius: 16px; padding: 14px 8px;
+    color: var(--text); font-family: 'Baloo 2', cursive;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    transition: all 0.18s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--pink); background: #fff0f8;
+    transform: translateY(-3px); box-shadow: 0 4px 12px rgba(255,121,176,0.2);
+  }
+  .opt-btn.correct { border-color: var(--mint); background: #f0fdf4; animation: popIn 0.3s ease; }
+  .opt-btn.wrong { border-color: #fca5a5; background: #fff5f5; animation: shake 0.4s ease; }
+  .opt-btn:disabled { cursor: not-allowed; }
+  .opt-letter {
+    font-size: 0.7rem; font-weight: 900; background: #e8d0f0;
+    border-radius: 6px; padding: 2px 7px; color: var(--purple);
+  }
+
+  /* Input */
+  .input-wrap { display: flex; gap: 10px; }
+  .answer-input {
+    flex: 1; background: #fdf4ff; border: 2.5px solid #e8d0f0;
+    border-radius: 16px; padding: 13px 16px; color: var(--text);
+    font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+    outline: none; transition: border-color 0.2s; text-align: center;
+  }
+  .answer-input:focus { border-color: var(--pink); }
+  .submit-btn {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; border-radius: 16px; padding: 13px 18px;
+    color: white; font-family: 'Fredoka One', cursive;
+    font-size: 1rem; cursor: pointer; transition: transform 0.15s;
+    box-shadow: 0 4px 12px rgba(255,121,176,0.3);
+  }
+  .submit-btn:hover { transform: scale(1.05); }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 14px; border-radius: 16px; padding: 12px 16px;
+    font-weight: 700; font-size: 0.9rem; display: none; line-height: 1.5;
+  }
+  .feedback.show { display: flex; align-items: flex-start; gap: 10px; animation: fadeIn 0.3s ease; }
+  .feedback.ok { background: #f0fdf4; border: 2px solid #86efac; }
+  .feedback.bad { background: #fff5f5; border: 2px solid #fca5a5; }
+
+  /* Next button */
+  .next-btn {
+    width: 100%; margin-top: 12px;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    border: none; border-radius: 16px; padding: 14px;
+    color: white; font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem; cursor: pointer; display: none; transition: transform 0.15s;
+    box-shadow: 0 4px 14px rgba(192,132,252,0.3);
+  }
+  .next-btn:hover { transform: scale(1.02); }
+  .next-btn.show { display: block; animation: fadeIn 0.3s ease; }
+
+  /* Results */
+  .results-card {
+    background: white; border: 3px solid var(--border);
+    border-radius: 28px; padding: 30px 22px; text-align: center; display: none;
+    box-shadow: 0 6px 24px rgba(255,121,176,0.15);
+  }
+  .results-card.show { display: block; animation: fadeIn 0.4s ease; }
+  .results-emoji { font-size: 4rem; margin-bottom: 10px; display: block; }
+  .results-title {
+    font-family: 'Fredoka One', cursive; font-size: 2rem; color: var(--pink);
+    text-shadow: 2px 2px 0 rgba(255,121,176,0.2); margin-bottom: 6px;
+  }
+  .results-score { font-family: 'Fredoka One', cursive; font-size: 3rem; color: var(--purple); margin: 12px 0 4px; }
+  .results-detail { color: var(--soft); font-size: 0.9rem; margin-bottom: 12px; font-weight: 700; }
+  .results-msg { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 20px; line-height: 1.5; }
+  .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  .badge {
+    background: #fdf4ff; border: 2px solid var(--border);
+    border-radius: 50px; padding: 6px 14px;
+    font-size: 0.78rem; font-weight: 800; color: var(--soft);
+  }
+  .badge.earned { border-color: var(--yellow); color: #d97706; background: #fffbeb; }
+  .play-again-btn {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border: none; border-radius: 16px; padding: 14px 36px;
+    color: white; font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem; cursor: pointer; transition: transform 0.15s;
+    box-shadow: 0 4px 16px rgba(255,121,176,0.35);
+  }
+  .play-again-btn:hover { transform: scale(1.04); }
+
+  /* Animations */
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes popIn { 0%{transform:scale(1)} 50%{transform:scale(1.07)} 100%{transform:scale(1)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+</style>
+</head>
+<body>
+
+<!-- Floating decorations -->
+<div class="deco">🌸</div>
+<div class="deco">⭐</div>
+<div class="deco">🦋</div>
+<div class="deco">🌈</div>
+<div class="deco">💫</div>
+<div class="deco">🍭</div>
+
+<div class="container">
+  <div class="header">
+    <span class="logo">🌸 El Mundo de Bella</span>
+    <p class="subtitle">¡Matemáticas mágicas para la mejor Bella del mundo! ✨</p>
+    <div class="stars-row" id="starsRow">
+      <span class="star" id="s0">⭐</span>
+      <span class="star" id="s1">⭐</span>
+      <span class="star" id="s2">⭐</span>
+      <span class="star" id="s3">⭐</span>
+      <span class="star" id="s4">⭐</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-pill">🍬 Puntos: <span class="stat-value" id="score">0</span></div>
+    <div class="stat-pill">🔥 Racha: <span class="stat-value" id="streak">0</span></div>
+    <div class="stat-pill">🏅 Récord: <span class="stat-value" id="best">0</span></div>
+  </div>
+
+  <div class="mode-selector">
+    <button class="mode-btn active" id="btn-suma" onclick="selectMode(&#39;suma&#39;)">
+      <span class="mode-icon">➕</span>
+      <span class="mode-name">Sumas y Restas</span>
+      <span class="mode-desc">¡A calcular!</span>
+    </button>
+    <button class="mode-btn" id="btn-multi" onclick="selectMode(&#39;multi&#39;)">
+      <span class="mode-icon">✖️</span>
+      <span class="mode-name">Multiplicar</span>
+      <span class="mode-desc">Tablas del 1 al 10</span>
+    </button>
+    <button class="mode-btn" id="btn-prob" onclick="selectMode(&#39;prob&#39;)">
+      <span class="mode-icon">🧁</span>
+      <span class="mode-name">Problemas</span>
+      <span class="mode-desc">Historias con mates</span>
+    </button>
+    <button class="mode-btn" id="btn-acert" onclick="selectMode(&#39;acert&#39;)">
+      <span class="mode-icon">🎪</span>
+      <span class="mode-name">Acertijos</span>
+      <span class="mode-desc">¡Adivina si puedes!</span>
+    </button>
+  </div>
+
+  <div class="difficulty-bar">
+    <button class="diff-btn active" data-diff="1" id="diff1" onclick="selectDiff(1)">🌱 Fácil</button>
+    <button class="diff-btn" data-diff="2" id="diff2" onclick="selectDiff(2)">⚡ Medio</button>
+    <button class="diff-btn" data-diff="3" id="diff3" onclick="selectDiff(3)">🚀 Difícil</button>
+  </div>
+
+  <div class="game-card" id="gameCard">
+    <div class="question-label">Pregunta <span class="qnum" id="qnum">1/10</span></div>
+    <div class="progress-dots" id="dots"><div class="dot done-bad" id="dot0"></div><div class="dot current" id="dot1"></div><div class="dot" id="dot2"></div><div class="dot" id="dot3"></div><div class="dot" id="dot4"></div><div class="dot" id="dot5"></div><div class="dot" id="dot6"></div><div class="dot" id="dot7"></div><div class="dot" id="dot8"></div><div class="dot" id="dot9"></div></div>
+    <div class="timer-row">
+      <div class="timer-bar-wrap"><div class="timer-bar urgent" id="timerBar" style="width: 0%;"></div></div>
+      <div class="timer-label" id="timerLabel">0</div>
+    </div>
+    <div class="question-text" id="questionText">10 + 1 = ?</div>
+    <div id="answerArea"><div class="options"><button class="opt-btn" onclick="checkMC(this,&#39;6&#39;)" disabled=""><span class="opt-letter">A</span> 6</button><button class="opt-btn" onclick="checkMC(this,&#39;13&#39;)" disabled=""><span class="opt-letter">B</span> 13</button><button class="opt-btn" onclick="checkMC(this,&#39;12&#39;)" disabled=""><span class="opt-letter">C</span> 12</button><button class="opt-btn" onclick="checkMC(this,&#39;11&#39;)" disabled=""><span class="opt-letter">D</span> 11</button></div></div>
+    <div class="feedback show bad" id="feedback"><span id="fbIcon">💪</span><span id="fbText"><strong>¡Casi, Bella!</strong> La respuesta era <strong>11</strong>.<br>10 + 1 = 11 🌸</span></div>
+    <button class="next-btn show" id="nextBtn" onclick="nextQuestion()">¡Siguiente! →</button>
+  </div>
+
+  <div class="results-card" id="resultsCard">
+    <span class="results-emoji" id="resEmoji">🌸</span>
+    <div class="results-title" id="resTitle"></div>
+    <div class="results-score" id="resScore"></div>
+    <div class="results-detail" id="resDetail"></div>
+    <div class="results-msg" id="resMsg"></div>
+    <div class="badges" id="resBadges"></div>
+    <button class="play-again-btn" onclick="startGame()">🌸 Jugar de nuevo</button>
+  </div>
+</div>
+
+<script>
+var TOTAL = 10;
+var mode = 'suma', diff = 1;
+var score = 0, streak = 0, best = parseInt(localStorage.getItem('bella_best') || '0');
+var current = 0, correct = 0, wrong = 0;
+var questions = [], usedTexts = [];
+var timerInterval = null, timeLeft = 30, maxTime = 30;
+var answered = false;
+
+document.getElementById('best').textContent = best;
+updateStars(0);
+
+function updateStars(n) {
+  for (var i = 0; i < 5; i++) {
+    var s = document.getElementById('s' + i);
+    s.textContent = i < n ? '🌟' : '⭐';
+  }
+}
+
+function selectMode(m) {
+  mode = m;
+  ['suma','multi','prob','acert'].forEach(function(k) {
+    document.getElementById('btn-' + k).classList.toggle('active', k === m);
+  });
+  startGame();
+}
+
+function selectDiff(d) {
+  diff = d;
+  [1,2,3].forEach(function(k) {
+    document.getElementById('diff' + k).classList.toggle('active', k === d);
+  });
+  startGame();
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+function shuffle(a) { return a.sort(function(){ return Math.random() - 0.5; }); }
+
+function makeMC(text, ans, time, lo, hi, explain) {
+  var wrongs = [], tries = 0;
+  while (wrongs.length < 3 && tries < 200) {
+    tries++;
+    var v = ans + rand(lo, hi);
+    if (v !== ans && v >= 0 && wrongs.indexOf(v) === -1) wrongs.push(v);
+  }
+  var options = shuffle(wrongs.concat([ans])).map(String);
+  return { text: text, type: 'mc', options: options, answer: String(ans), time: time, explain: explain || ('¡La respuesta es ' + ans + '! 🌟') };
+}
+
+// ── SUMAS Y RESTAS ────────────────────────────────────────
+function genSuma() {
+  var qs = [], tries = 0;
+  while (qs.length < TOTAL && tries < 200) {
+    tries++;
+    var q = diff === 1 ? sumaEasy() : diff === 2 ? sumaMed() : sumaHard();
+    if (q && usedTexts.indexOf(q.text) === -1) { qs.push(q); usedTexts.push(q.text); }
+  }
+  return qs;
+}
+
+function sumaEasy() {
+  var t = rand(0, 1);
+  if (t === 0) {
+    var a = rand(1, 20), b = rand(1, 20);
+    return makeMC(a + ' + ' + b + ' = ?', a + b, 30, -5, 5, a + ' + ' + b + ' = ' + (a+b) + ' 🌸');
+  }
+  var a = rand(10, 30), b = rand(1, a);
+  return makeMC(a + ' - ' + b + ' = ?', a - b, 30, -5, 5, a + ' - ' + b + ' = ' + (a-b) + ' 🌸');
+}
+
+function sumaMed() {
+  var t = rand(0, 2);
+  if (t === 0) { var a=rand(20,99),b=rand(10,50); return makeMC(a+' + '+b+' = ?', a+b, 25, -8, 8); }
+  if (t === 1) { var a=rand(30,99),b=rand(10,a); return makeMC(a+' - '+b+' = ?', a-b, 25, -8, 8); }
+  var a=rand(5,20),b=rand(5,20),c=rand(1,10);
+  return makeMC(a+' + '+b+' + '+c+' = ?', a+b+c, 25, -8, 8);
+}
+
+function sumaHard() {
+  var t = rand(0, 2);
+  if (t === 0) { var a=rand(100,500),b=rand(100,400); return makeMC(a+' + '+b+' = ?', a+b, 22, -20, 20); }
+  if (t === 1) { var a=rand(100,500),b=rand(50,a); return makeMC(a+' - '+b+' = ?', a-b, 22, -20, 20); }
+  var a=rand(50,200),b=rand(50,200),c=rand(10,50);
+  return makeMC(a+' + '+b+' - '+c+' = ?', a+b-c, 22, -15, 15);
+}
+
+// ── MULTIPLICACIONES ──────────────────────────────────────
+function genMulti() {
+  var qs = [], tries = 0;
+  while (qs.length < TOTAL && tries < 300) {
+    tries++;
+    var q = diff === 1 ? multiEasy() : diff === 2 ? multiMed() : multiHard();
+    if (q && usedTexts.indexOf(q.text) === -1) { qs.push(q); usedTexts.push(q.text); }
+  }
+  return qs;
+}
+
+function multiEasy() {
+  var a = rand(1, 5), b = rand(1, 5);
+  return makeMC(a + ' × ' + b + ' = ?', a*b, 30, -4, 6, 'La tabla del ' + a + ': ' + a + '×' + b + '=' + (a*b) + ' 🌟');
+}
+
+function multiMed() {
+  var t = rand(0, 1);
+  if (t === 0) { var a=rand(2,10),b=rand(2,10); return makeMC(a+' × '+b+' = ?', a*b, 25, -5, 8); }
+  var a=rand(2,9),b=rand(2,9),ans=a*b;
+  return makeMC(ans+' ÷ '+a+' = ?', b, 25, -3, 4, ans+'÷'+a+'='+b+' 🌟');
+}
+
+function multiHard() {
+  var t = rand(0, 2);
+  if (t === 0) { var a=rand(6,12),b=rand(6,12); return makeMC(a+' × '+b+' = ?', a*b, 20, -8, 12); }
+  if (t === 1) { var a=rand(2,9),b=rand(2,9),c=rand(1,5); return makeMC(a+' × '+b+' + '+c+' = ?', a*b+c, 20, -6, 10); }
+  var a=rand(2,9); return makeMC('¿Cuánto es '+a+'²?', a*a, 20, -8, 12, a+'×'+a+'='+a*a+' 🌸');
+}
+
+// ── PROBLEMAS ─────────────────────────────────────────────
+function genProb() {
+  var bank = [
+    // Fácil
+    {d:1,text:'🍎 Bella tiene 8 manzanas.\nSu amiga le da 5 más. ¿Cuántas manzanas tiene ahora?',ans:13,exp:'8 + 5 = 13 manzanas 🍎'},
+    {d:1,text:'🦋 Hay 15 mariposas en el jardín.\nVuelan 6. ¿Cuántas quedan?',ans:9,exp:'15 - 6 = 9 mariposas 🦋'},
+    {d:1,text:'🍬 Bella tiene 4 bolsas con 5 caramelos cada una.\n¿Cuántos caramelos tiene en total?',ans:20,exp:'4 × 5 = 20 caramelos 🍬'},
+    {d:1,text:'🌸 Hay 3 floreros con 7 flores cada uno.\n¿Cuántas flores hay en total?',ans:21,exp:'3 × 7 = 21 flores 🌸'},
+    {d:1,text:'🐱 Bella tiene 12 cromos. Le regala 4 a su amiga.\n¿Cuántos le quedan?',ans:8,exp:'12 - 4 = 8 cromos 🐱'},
+    {d:1,text:'🎀 Hay 20 lazos y se reparten en 4 cajas iguales.\n¿Cuántos lazos hay en cada caja?',ans:5,exp:'20 ÷ 4 = 5 lazos 🎀'},
+    {d:1,text:'🌈 Bella colorea 6 páginas cada día.\n¿Cuántas páginas colorea en 3 días?',ans:18,exp:'6 × 3 = 18 páginas 🌈'},
+    {d:1,text:'🍰 Una tarta se corta en 8 trozos iguales.\nBella come 2 trozos. ¿Cuántos quedan?',ans:6,exp:'8 - 2 = 6 trozos 🍰'},
+    {d:1,text:'⭐ Bella gana 5 estrellas el lunes, 3 el martes y 4 el miércoles.\n¿Cuántas estrellas tiene?',ans:12,exp:'5 + 3 + 4 = 12 estrellas ⭐'},
+    {d:1,text:'🐠 Hay 24 peces en 3 acuarios iguales.\n¿Cuántos peces hay en cada acuario?',ans:8,exp:'24 ÷ 3 = 8 peces 🐠'},
+    {d:1,text:'🎈 Bella tiene 30 globos y regala 12.\n¿Cuántos le quedan?',ans:18,exp:'30 - 12 = 18 globos 🎈'},
+    {d:1,text:'🍓 Hay 5 cestas con 9 fresas cada una.\n¿Cuántas fresas hay en total?',ans:45,exp:'5 × 9 = 45 fresas 🍓'},
+    // Medio
+    {d:2,text:'🛍️ Bella compra 3 cosas a 6€ cada una.\nTiene 25€. ¿Cuánto le sobra?',ans:7,exp:'3×6=18€, 25-18=7€ sobran 🛍️'},
+    {d:2,text:'📚 Bella lee 15 páginas al día.\n¿Cuántas páginas leerá en una semana?',ans:105,exp:'15 × 7 = 105 páginas 📚'},
+    {d:2,text:'🎁 Hay 36 caramelos para repartir entre 9 amigos.\n¿Cuántos caramelos recibe cada amigo?',ans:4,exp:'36 ÷ 9 = 4 caramelos 🎁'},
+    {d:2,text:'🌟 Bella tiene el doble de pegatinas que su hermana.\nSu hermana tiene 14. ¿Cuántas tiene Bella?',ans:28,exp:'2 × 14 = 28 pegatinas 🌟'},
+    {d:2,text:'🚲 Un parque tiene 5 filas de 8 bicicletas.\n¿Cuántas bicicletas hay en total?',ans:40,exp:'5 × 8 = 40 bicicletas 🚲'},
+    {d:2,text:'🍦 Bella y 3 amigas comparten 20 euros para helados.\n¿Cuánto paga cada una?',ans:5,exp:'20 ÷ 4 = 5€ cada una 🍦'},
+    {d:2,text:'🐝 Hay 48 abejas repartidas en 6 colmenas iguales.\n¿Cuántas abejas hay en cada colmena?',ans:8,exp:'48 ÷ 6 = 8 abejas 🐝'},
+    {d:2,text:'🎨 Bella usa 7 colores diferentes.\nHace 9 dibujos con cada color. ¿Cuántos dibujos hace?',ans:63,exp:'7 × 9 = 63 dibujos 🎨'},
+    // Difícil
+    {d:3,text:'🍕 Una pizza cuesta 8€. Bella tiene 50€.\n¿Cuántas pizzas puede comprar y cuánto le sobra?',ans:2,exp:'50÷8=6 pizzas, sobran 50-48=2€. La respuesta es 2€ de sobra 🍕'},
+    {d:3,text:'🐣 Una gallina pone 3 huevos al día.\n¿Cuántos huevos ponen 4 gallinas en una semana?',ans:84,exp:'3×4=12 huevos al día, 12×7=84 en una semana 🐣'},
+    {d:3,text:'🎪 En una feria hay 5 atracciones.\nCada atracción cuesta 3€ y Bella las monta todas 2 veces.\n¿Cuánto gasta?',ans:30,exp:'5×3×2 = 30€ 🎪'},
+    {d:3,text:'🌺 Bella planta 4 semillas el lunes y el doble cada día siguiente.\n¿Cuántas planta el miércoles?',ans:16,exp:'Lunes:4, Martes:8, Miércoles:16 🌺'},
+    {d:3,text:'🏆 En un concurso se dan 10 puntos por acierto y -3 por fallo.\nBella acierta 8 y falla 4. ¿Cuántos puntos tiene?',ans:68,exp:'8×10=80, 4×3=12, 80-12=68 puntos 🏆'},
+  ];
+  var pool = bank.filter(function(q){ return q.d === diff; });
+  shuffle(pool);
+  return pool.slice(0, TOTAL).map(function(q) {
+    var lo = diff===1 ? -6 : -10, hi = diff===1 ? 6 : 12;
+    return makeMC(q.text, q.ans, diff===1?35:diff===2?30:25, lo, hi, q.exp);
+  });
+}
+
+// ── ACERTIJOS ─────────────────────────────────────────────
+function genAcert() {
+  var bank = [
+    // Fácil
+    {d:1,text:'🐾 Tengo 4 patas pero no soy un animal.\nTengo una superficie plana para comer.\n¿Qué soy?',opts:['Una mesa','Una silla','Un árbol','Un sofá'],ans:'Una mesa',exp:'¡Una mesa tiene 4 patas! 🍽️'},
+    {d:1,text:'🔢 Soy un número entre 1 y 10.\nSoy par y mayor que 6. Soy menor que 10.\n¿Cuál soy?',opts:['6','8','4','10'],ans:'8',exp:'¡El número 8 es par, mayor que 6 y menor que 10! 🔢'},
+    {d:1,text:'🌙 ¿Cuántas horas tiene un día?',opts:['12','24','48','36'],ans:'24',exp:'¡Un día tiene 24 horas! 🌙'},
+    {d:1,text:'🍎 Si tienes 10 manzanas y te comes la mitad,\n¿cuántas manzanas te quedan?',opts:['3','5','4','6'],ans:'5',exp:'La mitad de 10 es 5 🍎'},
+    {d:1,text:'📅 ¿Cuántos días tiene una semana?',opts:['5','6','7','8'],ans:'7',exp:'¡La semana tiene 7 días! 📅'},
+    {d:1,text:'🐔 Una gallina tarda 1 día en poner 1 huevo.\n¿Cuántos días tarda en poner 7 huevos?',opts:['3','5','7','9'],ans:'7',exp:'¡1 huevo al día = 7 días para 7 huevos! 🐔'},
+    {d:1,text:'🎂 Bella tiene 9 años.\n¿Cuántos años tendrá dentro de 5 años?',opts:['12','13','14','15'],ans:'14',exp:'9 + 5 = 14 años 🎂'},
+    {d:1,text:'🌟 Soy el doble de 6.\n¿Cuál soy?',opts:['10','11','12','13'],ans:'12',exp:'El doble de 6 es 6×2 = 12 🌟'},
+    {d:1,text:'🐛 Un gusano tiene 0 patas, una araña tiene 8.\nSi hay 2 arañas y 3 gusanos, ¿cuántas patas hay?',opts:['14','16','18','20'],ans:'16',exp:'2×8 + 3×0 = 16 patas 🐛'},
+    {d:1,text:'🔴 Soy un número impar entre 4 y 8.\n¿Cuál soy?',opts:['4','5','6','8'],ans:'5',exp:'¡El 5 es impar y está entre 4 y 8! 🔴'},
+    // Medio
+    {d:2,text:'🐑 Tengo 20 ovejas. Todas menos 8 se escapan.\n¿Cuántas ovejas me quedan?',opts:['8','10','12','14'],ans:'8',exp:'"Todas menos 8" = me quedan 8 ovejas 🐑'},
+    {d:2,text:'🪜 Una escalera tiene 12 peldaños.\nBella sube 1 y baja 2, sube 1 y baja 2...\n¿En qué peldaño está después de 6 movimientos?',opts:['0','1','2','3'],ans:'0',exp:'Cada par de movimientos baja 1: tras 6 movimientos está en 0 🪜'},
+    {d:2,text:'🎯 Tengo un número. Si le sumo 15 obtengo 28.\n¿Cuál es mi número?',opts:['11','12','13','14'],ans:'13',exp:'28 - 15 = 13 🎯'},
+    {d:2,text:'🍫 Un chocolate cuesta 2€. Bella tiene 1 billete de 5€.\n¿Cuántos chocolates puede comprar?',opts:['1','2','3','4'],ans:'2',exp:'2€×2=4€ ≤ 5€, pero 2€×3=6€ > 5€. ¡Solo puede comprar 2! 🍫'},
+    {d:2,text:'🌻 Un girasol crece 3 cm cada semana.\nEmpezó midiendo 5 cm. ¿Cuánto mide después de 4 semanas?',opts:['15','17','19','21'],ans:'17',exp:'5 + 4×3 = 5+12 = 17 cm 🌻'},
+    {d:2,text:'🐠 En una pecera hay peces rojos y azules.\nHay el doble de rojos que azules. En total hay 12.\n¿Cuántos peces azules hay?',opts:['3','4','5','6'],ans:'4',exp:'Azules=4, Rojos=8, Total=12 🐠'},
+    {d:2,text:'🎪 Soy un número. Si me multiplicas por mí mismo obtienes 49.\n¿Cuál soy?',opts:['6','7','8','9'],ans:'7',exp:'7 × 7 = 49 🎪'},
+    {d:2,text:'🍭 Bella reparte sus caramelos entre 5 amigas.\nA cada una le tocan 6. ¿Cuántos caramelos tenía?',opts:['25','28','30','35'],ans:'30',exp:'5 × 6 = 30 caramelos 🍭'},
+    // Difícil
+    {d:3,text:'🧩 Soy un número de dos cifras.\nSoy múltiplo de 3 y de 4. Estoy entre 20 y 30.\n¿Cuál soy?',opts:['21','24','27','28'],ans:'24',exp:'24 = 3×8 = 4×6. ¡Es múltiplo de 3 y 4! 🧩'},
+    {d:3,text:'🏃 Ana llega antes que Bea. Bea llega antes que Cara.\n¿Quién llega la última?',opts:['Ana','Bea','Cara','Todas iguales'],ans:'Cara',exp:'Ana → Bea → Cara. ¡Cara llega la última! 🏃'},
+    {d:3,text:'🌙 Si hoy es miércoles, ¿qué día será dentro de 10 días?',opts:['lunes','martes','miércoles','jueves'],ans:'sábado',exp:'10 días después del miércoles es sábado (10 mod 7 = 3 días más)'},
+    {d:3,text:'🔢 Soy un número primo mayor que 10 y menor que 20.\nSoy impar y la suma de mis cifras es 4.\n¿Cuál soy?',opts:['11','13','17','19'],ans:'13',exp:'13 es primo, 1+3=4 🔢'},
+    {d:3,text:'🎈 Bella tiene el triple de globos que su hermana.\nEntre las dos tienen 28 globos.\n¿Cuántos tiene Bella?',opts:['18','20','21','24'],ans:'21',exp:'Hermana=7, Bella=21, Total=28 🎈'},
+    {d:3,text:'🍰 Una tarta se divide en 6 trozos iguales.\nBella come 2 trozos, su amiga come 1.\n¿Qué fracción de la tarta sobra?',opts:['1/2','1/3','1/6','2/3'],ans:'1/2',exp:'Quedan 3 de 6 trozos = 3/6 = 1/2 🍰'},
+  ];
+  var pool = bank.filter(function(q){ return q.d === diff; });
+  shuffle(pool);
+  return pool.slice(0, TOTAL).map(function(q) {
+    if (q.opts) {
+      return { text: q.text, type: 'mc', options: shuffle(q.opts.slice()), answer: q.ans, time: diff===1?35:30, explain: q.exp };
+    }
+    return makeMC(q.text, q.ans, diff===1?35:30, -5, 8, q.exp);
+  });
+}
+
+// ── GAME FLOW ─────────────────────────────────────────────
+function startGame() {
+  clearInterval(timerInterval);
+  score = 0; streak = 0; current = 0; correct = 0; wrong = 0;
+  usedTexts = [];
+  updateStats(); updateStars(0);
+  document.getElementById('gameCard').style.display = '';
+  document.getElementById('resultsCard').classList.remove('show');
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  if (mode === 'suma') questions = genSuma();
+  else if (mode === 'multi') questions = genMulti();
+  else if (mode === 'prob') questions = genProb();
+  else questions = genAcert();
+
+  buildDots(); showQuestion();
+}
+
+function buildDots() {
+  var d = document.getElementById('dots');
+  d.innerHTML = '';
+  for (var i = 0; i < TOTAL; i++) {
+    var el = document.createElement('div');
+    el.className = 'dot' + (i === 0 ? ' current' : '');
+    el.id = 'dot' + i;
+    d.appendChild(el);
+  }
+}
+
+function updateDot(i, ok) {
+  var d = document.getElementById('dot' + i);
+  if (!d) return;
+  d.classList.remove('current');
+  d.classList.add(ok ? 'done-ok' : 'done-bad');
+  var next = document.getElementById('dot' + (i + 1));
+  if (next) next.classList.add('current');
+}
+
+function showQuestion() {
+  answered = false;
+  var q = questions[current];
+  document.getElementById('qnum').textContent = (current+1)+'/'+TOTAL;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  var area = document.getElementById('answerArea');
+  if (q.type === 'mc') {
+    var letters = ['A','B','C','D'];
+    var html = '<div class="options">';
+    for (var i = 0; i < q.options.length; i++) {
+      html += '<button class="opt-btn" onclick="checkMC(this,\'' + q.options[i].replace(/'/g,"\\'") + '\')"><span class="opt-letter">' + letters[i] + '</span> ' + q.options[i] + '</button>';
+    }
+    html += '</div>';
+    area.innerHTML = html;
+  } else {
+    area.innerHTML = '<div class="input-wrap"><input class="answer-input" type="number" id="ansInput" placeholder="Tu respuesta…" step="any"/><button class="submit-btn" onclick="checkInput()">✓ OK</button></div>';
+    document.getElementById('ansInput').addEventListener('keydown', function(e){ if(e.key==='Enter') checkInput(); });
+    setTimeout(function(){ var el=document.getElementById('ansInput'); if(el) el.focus(); }, 50);
+  }
+  startTimer(q.time);
+}
+
+function startTimer(sec) {
+  clearInterval(timerInterval);
+  timeLeft = sec; maxTime = sec;
+  updateTimerUI();
+  timerInterval = setInterval(function(){
+    timeLeft--;
+    updateTimerUI();
+    if (timeLeft <= 0) { clearInterval(timerInterval); timeOut(); }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  var pct = (timeLeft / maxTime) * 100;
+  var bar = document.getElementById('timerBar');
+  bar.style.width = pct + '%';
+  bar.className = 'timer-bar' + (pct < 30 ? ' urgent' : '');
+  document.getElementById('timerLabel').textContent = timeLeft;
+}
+
+function timeOut() {
+  if (answered) return;
+  answered = true; streak = 0; wrong++;
+  disableAnswers();
+  showFeedback(false, questions[current], 0);
+  updateDot(current, false); updateStats();
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function checkMC(btn, val) {
+  if (answered) return;
+  clearInterval(timerInterval);
+  answered = true;
+  var q = questions[current];
+  var ok = (val === q.answer);
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  if (!ok) {
+    var btns = document.querySelectorAll('.opt-btn');
+    for (var i = 0; i < btns.length; i++) {
+      if (btns[i].textContent.trim().indexOf(q.answer) !== -1) btns[i].classList.add('correct');
+    }
+  }
+  disableAnswers();
+  processResult(ok, q);
+}
+
+function checkInput() {
+  if (answered) return;
+  var inp = document.getElementById('ansInput');
+  if (!inp || inp.value.trim() === '') return;
+  clearInterval(timerInterval);
+  answered = true;
+  var q = questions[current];
+  var ok = Math.abs(parseFloat(inp.value) - parseFloat(q.answer)) < 0.1;
+  inp.style.borderColor = ok ? 'var(--mint)' : '#fca5a5';
+  processResult(ok, q);
+}
+
+function processResult(ok, q) {
+  if (ok) {
+    var bonus = Math.ceil(timeLeft / maxTime * 10);
+    var pts = 10 + bonus;
+    score += pts; streak++; correct++;
+    if (score > best) { best = score; localStorage.setItem('bella_best', best); }
+    showFeedback(true, q, pts);
+  } else {
+    streak = 0; wrong++;
+    showFeedback(false, q, 0);
+  }
+  updateDot(current, ok);
+  updateStats();
+  updateStars(Math.min(5, Math.floor(correct / 2)));
+  document.getElementById('nextBtn').className = 'next-btn show';
+}
+
+function disableAnswers() {
+  var els = document.querySelectorAll('.opt-btn, .submit-btn, .answer-input');
+  for (var i = 0; i < els.length; i++) els[i].disabled = true;
+}
+
+function showFeedback(ok, q, pts) {
+  var fb = document.getElementById('feedback');
+  fb.className = 'feedback show ' + (ok ? 'ok' : 'bad');
+  document.getElementById('fbIcon').textContent = ok ? '🌟' : '💪';
+  document.getElementById('fbText').innerHTML = ok
+    ? '<strong>¡Genial, Bella! +' + pts + ' puntos</strong><br>' + (q.explain || '')
+    : '<strong>¡Casi, Bella!</strong> La respuesta era <strong>' + q.answer + '</strong>.<br>' + (q.explain || '');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= TOTAL) { showResults(); return; }
+  showQuestion();
+}
+
+function updateStats() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('streak').textContent = streak;
+  document.getElementById('best').textContent = best;
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+  document.getElementById('gameCard').style.display = 'none';
+  document.getElementById('resultsCard').classList.add('show');
+  var pct = correct / TOTAL;
+  var emoji, title, msg;
+  if (pct === 1)       { emoji='🏆'; title='¡Bella es perfecta!'; msg='¡Todo correcto! Eres la más lista del mundo, Bella! 🌟🌸'; }
+  else if (pct >= 0.8) { emoji='🌸'; title='¡Súper Bella!'; msg='¡Qué lista eres! Casi perfecta, sigue así 💜✨'; }
+  else if (pct >= 0.6) { emoji='⭐'; title='¡Muy bien, Bella!'; msg='¡Lo estás haciendo genial! Practica un poco más 🌈'; }
+  else if (pct >= 0.4) { emoji='💪'; title='¡Tú puedes, Bella!'; msg='¡No te rindas! Con un poco más de práctica lo consigues 🦋'; }
+  else                 { emoji='🌱'; title='¡Ánimo, Bella!'; msg='Prueba el nivel fácil y ve subiendo. ¡Tú puedes! 🌸'; }
+
+  document.getElementById('resEmoji').textContent = emoji;
+  document.getElementById('resTitle').textContent = title;
+  document.getElementById('resScore').textContent = score + ' puntos';
+  document.getElementById('resDetail').textContent = correct + ' correctas · ' + wrong + ' falladas · de ' + TOTAL + ' preguntas';
+  document.getElementById('resMsg').textContent = msg;
+  updateStars(Math.min(5, Math.round(pct * 5)));
+
+  var badges = [];
+  if (correct === TOTAL) badges.push('🏆 ¡Todo correcto!');
+  if (streak >= 5)       badges.push('🔥 Racha de ' + streak);
+  if (score > 120)       badges.push('⭐ Super puntuación');
+  if (diff === 3 && pct >= 0.6) badges.push('🚀 Nivel difícil');
+
+  document.getElementById('resBadges').innerHTML = badges.map(function(b){
+    return '<div class="badge earned">' + b + '</div>';
+  }).join('');
+}
+
+startGame();
+</script>
+
+
+</body></html>
